@@ -2,4 +2,5 @@
 <resources>
     <color name="menubg">#008BD4</color>
     <color name="background">#338383</color>
+    <color name="warning">#FF0000</color>
 </resources>

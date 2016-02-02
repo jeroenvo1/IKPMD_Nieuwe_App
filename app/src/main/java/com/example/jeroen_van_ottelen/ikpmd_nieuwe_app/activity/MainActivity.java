@@ -3,19 +3,25 @@ package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
 
 public class MainActivity extends ActionBarActivity
 {
+    private SharedPreferences SP;
+    private SharedPreferences.Editor editor;
 
-    private String username;
+    private TextView user_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,8 +29,17 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(true)
+        // PreferenceManager en editor aanmaken.
+        SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        editor = SP.edit();
+
+        // Textview user_name maken
+        user_name = (TextView) findViewById(R.id.naam_user);
+
+        // Als er nog nooi een naam is ingevoerd, voer die dan in
+        if(SP.getString("username", null) == null)
         {
+            // Maak een allert scherm en zet de naam
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Voer uw naam in");
 
@@ -35,29 +50,33 @@ public class MainActivity extends ActionBarActivity
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             builder.setView(input);
 
-            // Set up the buttons
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
-            {
+            // Buttons en onClickListemer maken
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    username = input.getText().toString();
-                    System.out.println("username: " + username);
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    dialog.cancel();
+                public void onClick(DialogInterface dialog, int which) {
+                    // Als er op de button geklikt wordt, zet de ingevoerde naam (username) in de
+                    // preferences en commit hem.
+                    editor.putString("username", input.getText().toString());
+                    editor.commit();
+
+                    // Haal de naam uit de preference, en zet hem in het textvak
+                    user_name.setText(SP.getString("username", null));
                 }
             });
 
             builder.show();
         }
+        // Als er ooit een keer een naam is ingevuld, haal deze uit de preferences en zet
+        // het in het textvak.
+        else
+        {
+            user_name.setText(SP.getString("username", null));
+        }
+    }
 
-
+    public void showCijfers(View view)
+    {
+        System.out.println("HALLLLLLLLLOOOOOOO");
     }
 
     @Override
@@ -84,6 +103,10 @@ public class MainActivity extends ActionBarActivity
         } else if(id == R.id.menu_overzicht)
         {
             startActivity(new Intent(this, OverzichtActivity.class));
+        } else if(id == R.id.reset_preferences)
+        {
+            editor.clear();
+            editor.commit();
         }
 
         return super.onOptionsItemSelected(item);

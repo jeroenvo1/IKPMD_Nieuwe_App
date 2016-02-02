@@ -150,6 +150,24 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 
 			subjects.add(subject);
 		}
+		System.out.println(subjects);
+		return subjects;
+	}
+
+	public List<Subject> getAllCijfers()
+	{
+		List<Subject> subjects = new ArrayList<>();
+
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_GRADE + ">0", null, null, null, null);
+
+		while(c.moveToNext())
+		{
+			Subject subject = new Subject();
+			subject.setName(c.getString(0));
+			subject.setGrade(c.getInt(1));
+
+			subjects.add(subject);
+		}
 
 		return subjects;
 	}

@@ -15,6 +15,11 @@
         android:title="@string/menu_item_2"
         android:orderInCategory="100"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/reset_preferences"
+        android:title="@string/reset"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 </menu>
 
 

@@ -4,4 +4,5 @@
     <string name="menu_item_1">Invoeren</string>
     <string name="menu_item_2">Overzicht</string>
     <string name="title_activity_overzicht">OverzichtActivity</string>
+    <string name="reset">Reset</string>
 </resources>
