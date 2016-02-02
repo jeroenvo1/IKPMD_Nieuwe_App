@@ -1,7 +1,9 @@
-package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app;
+package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
 
 public class OverzichtActivity extends Activity
 {

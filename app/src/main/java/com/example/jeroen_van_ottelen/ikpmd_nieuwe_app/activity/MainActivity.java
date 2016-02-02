@@ -1,4 +1,4 @@
-package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app;
+package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,6 +9,8 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
 
 public class MainActivity extends ActionBarActivity
 {
