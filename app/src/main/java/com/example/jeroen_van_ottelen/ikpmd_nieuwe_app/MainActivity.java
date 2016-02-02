@@ -1,19 +1,59 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 public class MainActivity extends ActionBarActivity
 {
+
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(true)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Voer uw naam in");
+
+            // Input maken
+            final EditText input = new EditText(this);
+
+            // Inupt soort instellen, alleen text
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+
+            // Set up the buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    username = input.getText().toString();
+                    System.out.println("username: " + username);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
 
 
     }
