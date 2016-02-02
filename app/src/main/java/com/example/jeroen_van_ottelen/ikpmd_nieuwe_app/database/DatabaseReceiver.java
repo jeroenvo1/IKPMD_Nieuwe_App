@@ -50,6 +50,8 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + DatabaseInfo.Subjects.TABLE_NAME + " (" +
 						DatabaseInfo.Subjects.COLUMN_NAME_NAME + " VARCHAR(100) PRIMARY KEY, " +
+						DatabaseInfo.Subjects.COLUMN_NAME_ECTS + " INTEGER, " +
+						DatabaseInfo.Subjects.COLUMN_NAME_PERIOD + " INTEGER, " +
 						DatabaseInfo.Subjects.COLUMN_NAME_GRADE + " INTEGER );"
 		);
 	}
@@ -92,26 +94,12 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		return database.query(table, columns, selection, selectArgs, groupBy, having, orderBy);
 	}
 
-	public ArrayList<Account> getAllAccounts()
-	{
-		ArrayList<Account> accountModels = new ArrayList<>();
-
-		Cursor c = query("account", null, null, null, null, null, null);
-
-		while(c.moveToNext())
-		{
-			Account account = new Account(c.getString(0), c.getString(1));
-
-			accountModels.add(account);
-		}
-
-		return accountModels;
-	}
-
 	public void insertSubject(Subject subject)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_NAME, subject.getName());
+		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_ECTS, subject.getEcts());
+		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_PERIOD, subject.getPeriod());
 		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
 
 		insert(DatabaseInfo.Subjects.TABLE_NAME, null, cv);
@@ -131,7 +119,9 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 
 		Subject subject = new Subject();
 		subject.setName(c.getString(0));
-		subject.setGrade(c.getInt(1));
+		subject.setEcts(c.getInt(1));
+		subject.setPeriod(c.getInt(2));
+		subject.setGrade(c.getInt(3));
 
 		return subject;
 	}
@@ -146,7 +136,9 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		{
 			Subject subject = new Subject();
 			subject.setName(c.getString(0));
-			subject.setGrade(c.getInt(1));
+			subject.setEcts(c.getInt(1));
+			subject.setPeriod(c.getInt(2));
+			subject.setGrade(c.getInt(3));
 
 			subjects.add(subject);
 		}

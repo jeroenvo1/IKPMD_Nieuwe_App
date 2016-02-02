@@ -16,6 +16,8 @@ public final class DatabaseInfo
 	{
 		public static final String TABLE_NAME = "subject";
 		public static final String COLUMN_NAME_NAME = "name";
+		public static final String COLUMN_NAME_ECTS = "ects";
+		public static final String COLUMN_NAME_PERIOD = "period";
 		public static final String COLUMN_NAME_GRADE = "grade";
 	}
 }
