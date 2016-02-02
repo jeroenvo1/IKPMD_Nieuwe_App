@@ -17,6 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".InvoerActivity" >
+        </activity>
+        <activity
+            android:name=".OverzichtActivity"
+            android:label="@string/title_activity_overzicht" >
+        </activity>
     </application>
 
 </manifest>
