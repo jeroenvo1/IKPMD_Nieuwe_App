@@ -23,11 +23,11 @@
         <activity android:name=".InvoerActivity" >
         </activity>
         <activity
-            android:name=".OverzichtActivity"
+            android:name=".activity.OverzichtActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".VakDetailActivity"
+            android:name=".activity.VakDetailActivity"
             android:label="@string/app_name" >
         </activity>
     </application>

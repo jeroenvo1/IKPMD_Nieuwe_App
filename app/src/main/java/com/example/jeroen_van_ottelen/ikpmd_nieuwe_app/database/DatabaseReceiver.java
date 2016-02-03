@@ -1,6 +1,5 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database;
 
-import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
+import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
 import java.util.List;
