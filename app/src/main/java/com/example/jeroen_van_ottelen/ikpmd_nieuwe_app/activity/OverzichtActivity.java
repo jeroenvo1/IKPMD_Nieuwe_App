@@ -1,10 +1,10 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.widget.*;
+import android.widget.ExpandableListView;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
@@ -16,11 +16,12 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OverzichtActivity extends Activity
+public class OverzichtActivity extends ActionBarActivity
 {
 
     private BarChart barChart;
@@ -32,10 +33,12 @@ public class OverzichtActivity extends Activity
     private List<String> xAs;
     private int[] colors;
 
-    private ExpandableListView listView;
-    private ExpandableListAdapter adapter;
-
-    private HashMap<String, List<String>> hashMap;
+    private ExpandableListView expListView;
+    private ExpandableListAdapter listAdapter;
+    private List<String> listDataHeader;
+    private HashMap<String, List<String>> listDataChild;
+    private boolean period;
+    private int selectedPeriod = 10;
 
     private DatabaseReceiver db;
 
@@ -57,12 +60,17 @@ public class OverzichtActivity extends Activity
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-                System.out.println("e: " + e + " index: " + dataSetIndex + " h: " + h);
+                if (period) {
+                    prepareListData(db.getSubjectsByPeriod(e.getXIndex()));
+                    selectedPeriod = e.getXIndex();
+                }
             }
 
             @Override
             public void onNothingSelected() {
-
+                // 10 is een random waarde waardoor de db een lege lijst terug geeft
+                prepareListData(db.getSubjectsByPeriod(10));
+                selectedPeriod = 10;
             }
         });
 
@@ -71,12 +79,17 @@ public class OverzichtActivity extends Activity
     // Barchart waar alle cijfers van alle vakken in staan
     public void setBarByGrade(View view)
     {
+        period = false;
 
         // Naam in de tabel zetten
         barChart.setDescription("Vak");
 
         // Alle cijfers die hoger dan 0 zijn ophalen
-        cijfers = db.getAllSubjects();
+        if(selectedPeriod != 10) {
+            cijfers = db.getSubjectsByPeriod(selectedPeriod);
+        } else {
+            cijfers = db.getAllSubjects();
+        }
 
         // Een ArrayList van de x en y as maken
         yAs = new ArrayList<>();
@@ -118,14 +131,12 @@ public class OverzichtActivity extends Activity
 
         barChart.notifyDataSetChanged();
         barChart.invalidate();
-
-//        listView = (ExpandableListView) findViewById(R.id.listView);
-//        adapter = new ExpandableListAdapter(this, android.R.layout.simple_list_item_1, xAs);
-//        listView.setAdapter(adapter);
     }
 
     public void setBarByPeriode(View view)
     {
+        period = true;
+
         barChart.setDescription("Periode");
 
         yAs = db.getEctsByPeriod();
@@ -159,5 +170,29 @@ public class OverzichtActivity extends Activity
 
         barChart.notifyDataSetChanged();
         barChart.invalidate();
+    }
+
+    private void prepareListData(List<Subject> subjects)
+    {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        // Adding child data
+        int i = 0;
+        for(Subject subject: subjects)
+        {
+            expListView = (ExpandableListView) findViewById(R.id.listView);
+            listDataHeader.add(subject.getName());
+
+            List<String> list = new ArrayList<>();
+            list.add("Aantal studiepunten: " + subject.getEcts());
+            list.add("Periode: " + subject.getPeriod());
+            list.add("Cijfer: " + subject.getGrade());
+            listDataChild.put(listDataHeader.get(i), list);
+            i++;
+        }
+
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, subjects);
+        expListView.setAdapter(listAdapter);
     }
 }

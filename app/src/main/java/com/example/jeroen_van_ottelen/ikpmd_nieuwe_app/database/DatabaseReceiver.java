@@ -162,6 +162,28 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		return subjects;
 	}
 
+	public List<Subject> getSubjectsByPeriod(int index)
+	{
+		List<Subject> subjects = new ArrayList<>();
+
+		int period = index + 1;
+
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_PERIOD + "=" + period, null, null, null, null);
+
+		while(c.moveToNext())
+		{
+			Subject subject = new Subject();
+			subject.setName(c.getString(0));
+			subject.setEcts(c.getInt(1));
+			subject.setPeriod(c.getInt(2));
+			subject.setGrade(c.getFloat(3));
+
+			subjects.add(subject);
+		}
+
+		return subjects;
+	}
+
 	public List<Subject> getAllCijfers()
 	{
 		List<Subject> subjects = new ArrayList<>();

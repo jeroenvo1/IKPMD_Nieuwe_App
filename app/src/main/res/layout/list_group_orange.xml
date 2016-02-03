@@ -3,14 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
-
+    android:padding="8dp"
+    android:background="#FF6600">
 
     <TextView
-        android:id="@+id/lblListHeader"
+        android:id="@+id/listHeaderOrange"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textSize="17dp" />
+
 
 </LinearLayout>

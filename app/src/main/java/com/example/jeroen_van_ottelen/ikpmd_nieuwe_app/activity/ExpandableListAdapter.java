@@ -9,6 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,35 +25,38 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
+    private List<Subject> _subjects;
 
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData)
+    public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData, List<Subject> subjects)
     {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this._subjects = subjects;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+    public Object getChild(int groupPosition, int childPosititon)
+    {
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
-    public long getChildId(int groupPosition, int childPosition) {
+    public long getChildId(int groupPosition, int childPosition)
+    {
         return childPosition;
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
+    {
 
         final String childText = (String) getChild(groupPosition, childPosition);
 
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (convertView == null)
+        {
+            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
 
@@ -87,18 +91,35 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
     {
+
         String headerTitle = (String) getGroup(groupPosition);
+
         if (convertView == null)
         {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
-        }
+            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
+            if(_subjects.get(groupPosition).getGrade() >= 7)
+            {
+                convertView = infalInflater.inflate(R.layout.list_group_green, null);
+                TextView lblListHeader = (TextView) convertView.findViewById(R.id.listHeaderGreen);
+                lblListHeader.setTypeface(null, Typeface.BOLD);
+                lblListHeader.setText(headerTitle);
+            }
+            else if(_subjects.get(groupPosition).getGrade() >= 5.5 && _subjects.get(groupPosition).getGrade() < 7)
+            {
+                convertView = infalInflater.inflate(R.layout.list_group_orange, null);
+                TextView lblListHeader = (TextView) convertView.findViewById(R.id.listHeaderOrange);
+                lblListHeader.setTypeface(null, Typeface.BOLD);
+                lblListHeader.setText(headerTitle);
+            }
+            else
+            {
+                convertView = infalInflater.inflate(R.layout.list_group_red, null);
+                TextView lblListHeader = (TextView) convertView.findViewById(R.id.listHeaderRed);
+                lblListHeader.setTypeface(null, Typeface.BOLD);
+                lblListHeader.setText(headerTitle);
+            }
+        }
 
         return convertView;
     }
