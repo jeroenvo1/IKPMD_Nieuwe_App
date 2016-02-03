@@ -1,17 +1,13 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database;
 
-import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
 
-import java.lang.reflect.Array;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +22,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	public static SQLiteDatabase database;
 	private static DatabaseReceiver databaseReceiver;
 	public static final String DATABASE_NAME = "database.db";
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
 	private Context context;
 
 	private DatabaseReceiver(Context context)
