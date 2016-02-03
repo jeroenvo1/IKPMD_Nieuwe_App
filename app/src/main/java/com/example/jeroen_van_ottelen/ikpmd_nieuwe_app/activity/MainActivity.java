@@ -14,17 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
-import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
-import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.gson.GsonRequest;
-import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
-import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.volley.VolleyHelper;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.List;
 
 public class MainActivity extends ActionBarActivity
 {

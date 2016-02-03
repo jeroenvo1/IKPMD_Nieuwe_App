@@ -9,7 +9,7 @@ public class Subject {
 	private String name;
 	private int ects;
 	private int period;
-	private int grade;
+	private double grade;
 
 	public String getName()
 	{
@@ -41,7 +41,7 @@ public class Subject {
 		this.period = period;
 	}
 
-	public int getGrade()
+	public double getGrade()
 	{
 		return grade;
 	}

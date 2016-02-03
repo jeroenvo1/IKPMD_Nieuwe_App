@@ -1,5 +1,6 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app;
 
+<<<<<<< HEAD
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,17 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.InvoerActivity;
+=======
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+>>>>>>> InvoerScherm
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.OverzichtActivity;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.gson.GsonRequest;
@@ -84,6 +96,7 @@ public class MainActivity extends ActionBarActivity
         {
             user_name.setText(SP.getString("username", null));
         }
+        DatabaseReceiver.getDatabaseReceiver(this);
     }
 
     @Override
@@ -141,6 +154,7 @@ public class MainActivity extends ActionBarActivity
         DatabaseReceiver databaseReceiver = DatabaseReceiver.getDatabaseReceiver(this);
 
         for (Subject subject : subjects) {
+            subject.setGrade(0);
             databaseReceiver.insertSubject(subject);
         }
     }
