@@ -6,9 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
 
+import java.lang.reflect.Array;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +53,8 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + DatabaseInfo.Subjects.TABLE_NAME + " (" +
 						DatabaseInfo.Subjects.COLUMN_NAME_NAME + " VARCHAR(100) PRIMARY KEY, " +
+						DatabaseInfo.Subjects.COLUMN_NAME_ECTS + " INTEGER, " +
+						DatabaseInfo.Subjects.COLUMN_NAME_PERIOD + " INTEGER, " +
 						DatabaseInfo.Subjects.COLUMN_NAME_GRADE + " INTEGER );"
 		);
 	}
@@ -92,46 +97,50 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		return database.query(table, columns, selection, selectArgs, groupBy, having, orderBy);
 	}
 
-	public ArrayList<Account> getAllAccounts()
-	{
-		ArrayList<Account> accountModels = new ArrayList<>();
-
-		Cursor c = query("account", null, null, null, null, null, null);
-
-		while(c.moveToNext())
-		{
-			Account account = new Account(c.getString(0), c.getString(1));
-
-			accountModels.add(account);
-		}
-
-		return accountModels;
-	}
-
 	public void insertSubject(Subject subject)
 	{
-		ContentValues cv = new ContentValues();
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_NAME, subject.getName());
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
+		// Insert the subject in the database when the subject doesn't already exist in the database.
+		if(!subjectExists(subject.getName())) {
+			ContentValues cv = new ContentValues();
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_NAME, subject.getName());
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_ECTS, subject.getEcts());
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_PERIOD, subject.getPeriod());
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
 
-		insert(DatabaseInfo.Subjects.TABLE_NAME, null, cv);
+			insert(DatabaseInfo.Subjects.TABLE_NAME, null, cv);
+		}
+	}
+
+	public boolean subjectExists(String name)
+	{
+		String table = DatabaseInfo.Subjects.TABLE_NAME;
+		String[] columns = {DatabaseInfo.Subjects.COLUMN_NAME_NAME};
+		String selection = DatabaseInfo.Subjects.COLUMN_NAME_NAME + " = '" + name + "'";
+
+		Cursor cursor = query(table, columns, selection, null, null, null, null);
+
+		boolean exists = (cursor.getCount() > 0);
+		cursor.close();
+		return exists;
 	}
 
 	public void deleteSubject(Subject subject)
 	{
 		String name = subject.getName();
-		database.delete(DatabaseInfo.Subjects.TABLE_NAME, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "='" + name + "'", null);
+		database.delete(DatabaseInfo.Subjects.TABLE_NAME, DatabaseInfo.Subjects.COLUMN_NAME_NAME + " ='" + name + "'", null);
 	}
 
 	public Subject getSubject(String name)
 	{
 
-		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "='" + name + "'", null, null, null, null);
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "= '" + name + "'", null, null, null, null);
 		c.moveToFirst();
 
 		Subject subject = new Subject();
 		subject.setName(c.getString(0));
-		subject.setGrade(c.getInt(1));
+		subject.setEcts(c.getInt(1));
+		subject.setPeriod(c.getInt(2));
+		subject.setGrade(c.getInt(3));
 
 		return subject;
 	}
@@ -146,7 +155,9 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		{
 			Subject subject = new Subject();
 			subject.setName(c.getString(0));
-			subject.setGrade(c.getInt(1));
+			subject.setEcts(c.getInt(1));
+			subject.setPeriod(c.getInt(2));
+			subject.setGrade(c.getInt(3));
 
 			subjects.add(subject);
 		}

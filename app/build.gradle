@@ -23,5 +23,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile project(':mpandroidchartlibrary-2-1-6')
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+    // Volley library voor HTTP req.
+    compile 'com.google.code.gson:gson:2.3.1'
 }
