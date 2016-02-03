@@ -3,6 +3,8 @@
     package="com.example.jeroen_van_ottelen.ikpmd_nieuwe_app" >
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,11 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.InvoerActivity" >
+        <activity android:name=".InvoerActivity" >
         </activity>
         <activity
             android:name=".activity.OverzichtActivity"
-            android:label="@string/title_activity_overzicht" >
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activity.VakDetailActivity"
+            android:label="@string/app_name" >
         </activity>
     </application>
 

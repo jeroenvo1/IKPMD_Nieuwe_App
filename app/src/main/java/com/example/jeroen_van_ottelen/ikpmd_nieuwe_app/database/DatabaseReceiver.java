@@ -1,6 +1,5 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database;
 
-import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
+import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	public static SQLiteDatabase database;
 	private static DatabaseReceiver databaseReceiver;
 	public static final String DATABASE_NAME = "database.db";
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
 	private Context context;
 
 	private DatabaseReceiver(Context context)
@@ -96,25 +96,41 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 
 	public void insertSubject(Subject subject)
 	{
-		ContentValues cv = new ContentValues();
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_NAME, subject.getName());
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_ECTS, subject.getEcts());
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_PERIOD, subject.getPeriod());
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
+		// Insert the subject in the database when the subject doesn't already exist in the database.
+		if(!subjectExists(subject.getName())) {
+			ContentValues cv = new ContentValues();
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_NAME, subject.getName());
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_ECTS, subject.getEcts());
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_PERIOD, subject.getPeriod());
+			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
 
-		insert(DatabaseInfo.Subjects.TABLE_NAME, null, cv);
+			insert(DatabaseInfo.Subjects.TABLE_NAME, null, cv);
+		}
+	}
+
+	public boolean subjectExists(String name)
+	{
+		String table = DatabaseInfo.Subjects.TABLE_NAME;
+		String[] columns = {DatabaseInfo.Subjects.COLUMN_NAME_NAME};
+		String selection = DatabaseInfo.Subjects.COLUMN_NAME_NAME + " = '" + name + "'";
+
+		Cursor cursor = query(table, columns, selection, null, null, null, null);
+
+		boolean exists = (cursor.getCount() > 0);
+		cursor.close();
+		return exists;
 	}
 
 	public void deleteSubject(Subject subject)
 	{
 		String name = subject.getName();
-		database.delete(DatabaseInfo.Subjects.TABLE_NAME, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "='" + name + "'", null);
+		database.delete(DatabaseInfo.Subjects.TABLE_NAME, DatabaseInfo.Subjects.COLUMN_NAME_NAME + " ='" + name + "'", null);
 	}
 
 	public Subject getSubject(String name)
 	{
 
-		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "='" + name + "'", null, null, null, null);
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "= '" + name + "'", null, null, null, null);
 		c.moveToFirst();
 
 		Subject subject = new Subject();
@@ -142,7 +158,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 
 			subjects.add(subject);
 		}
-		System.out.println(subjects);
+		
 		return subjects;
 	}
 
@@ -162,5 +178,60 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		}
 
 		return subjects;
+	}
+
+	public List<BarEntry> getEctsByPeriod()
+	{
+		List<BarEntry> barList = new ArrayList<>();
+
+		String[] sum = new String[1];
+		sum[0] = "sum(" + DatabaseInfo.Subjects.COLUMN_NAME_ECTS + ")";
+
+		String where = DatabaseInfo.Subjects.COLUMN_NAME_GRADE + ">0 AND " + DatabaseInfo.Subjects.COLUMN_NAME_PERIOD + "=";
+
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "1", null, null, null, null);
+		c.moveToNext();
+		barList.add(new BarEntry(c.getInt(0), 0));
+
+		c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "2", null, null, null, null);
+		c.moveToNext();
+		barList.add(new BarEntry(c.getInt(0), 1));
+
+		c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "3", null, null, null, null);
+		c.moveToNext();
+		barList.add(new BarEntry(c.getInt(0), 2));
+
+		c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "4", null, null, null, null);
+		c.moveToNext();
+		barList.add(new BarEntry(c.getInt(0), 3));
+
+		return barList;
+	}
+
+	public int[] getMaxEctsPerPeriod()
+	{
+		int[] ects = new int[4];
+
+		String[] sum = new String[1];
+		sum[0] = "sum(" + DatabaseInfo.Subjects.COLUMN_NAME_ECTS + ")";
+		String where = DatabaseInfo.Subjects.COLUMN_NAME_PERIOD + "=";
+
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "1", null, null, null, null);
+		c.moveToNext();
+		ects[0] = c.getInt(0);
+
+		c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "2", null, null, null, null);
+		c.moveToNext();
+		ects[1] = c.getInt(0);
+
+		c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "3", null, null, null, null);
+		c.moveToNext();
+		ects[2] = c.getInt(0);
+
+		c = query(DatabaseInfo.Subjects.TABLE_NAME, sum, where + "4", null, null, null, null);
+		c.moveToNext();
+		ects[3] = c.getInt(0);
+
+		return ects;
 	}
 }
