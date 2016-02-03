@@ -32,6 +32,7 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         requestSubjects();
         setContentView(R.layout.activity_main);
+        DatabaseReceiver.getDatabaseReceiver(this);
     }
 
     @Override
@@ -89,6 +90,7 @@ public class MainActivity extends ActionBarActivity
         DatabaseReceiver databaseReceiver = DatabaseReceiver.getDatabaseReceiver(this);
 
         for (Subject subject : subjects) {
+            subject.setGrade(0);
             databaseReceiver.insertSubject(subject);
         }
     }
