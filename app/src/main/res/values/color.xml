@@ -3,4 +3,7 @@
     <color name="menubg">#008BD4</color>
     <color name="background">#338383</color>
     <color name="warning">#FF0000</color>
+    <color name="green">#6A961F</color>
+    <color name="orange">#FF6600</color>
+    <color name="red">#C12552</color>
 </resources>

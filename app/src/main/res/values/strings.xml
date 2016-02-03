@@ -5,4 +5,6 @@
     <string name="menu_item_2">Overzicht</string>
     <string name="title_activity_overzicht">OverzichtActivity</string>
     <string name="reset">Reset</string>
+    <string name="overzicht_radio_1">Per vak</string>
+    <string name="overzicht_radio_2">Per periode</string>
 </resources>
