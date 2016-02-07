@@ -1,11 +1,7 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -96,6 +92,7 @@ public class VakDetailActivity extends ActionBarActivity {
 				else
 				{
 					databaseReceiver.updateSubject(subject);
+					
 					finish();
 				}
 		}});

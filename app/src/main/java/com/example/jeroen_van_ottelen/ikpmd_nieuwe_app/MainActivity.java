@@ -12,7 +12,9 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -26,6 +28,7 @@ import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.volley.VolleyHelper;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity
@@ -38,6 +41,10 @@ public class MainActivity extends ActionBarActivity
     private TextView user_name;
     private TextView studiepuntenText;
     private int studiepunten;
+
+    private ListView recentIngevoerd;
+    private ArrayAdapter adapter;
+    private List<String> recentIngevoerdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,7 +67,7 @@ public class MainActivity extends ActionBarActivity
         studiepuntenText.setText("Totaal aantal studiepunten: " + studiepunten);
 
 
-        // Als er nog nooi een naam is ingevoerd, voer die dan in
+        // Als er nog nooit een naam is ingevoerd, voer die dan in
         if(SP.getString("username", null) == null)
         {
             // Maak een allert scherm en zet de naam
@@ -96,6 +103,13 @@ public class MainActivity extends ActionBarActivity
         {
             user_name.setText(SP.getString("username", null));
         }
+
+        recentIngevoerd = (ListView) findViewById(R.id.recent_ingevoerd_list);
+
+        recentIngevoerdList = new ArrayList<>();
+
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, recentIngevoerdList);
+        recentIngevoerd.setAdapter(adapter);
     }
 
     public void showCijfers(View view)

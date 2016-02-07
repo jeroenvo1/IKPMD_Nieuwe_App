@@ -7,6 +7,7 @@
     <string name="reset">Reset</string>
     <string name="overzicht_radio_1">Per vak</string>
     <string name="overzicht_radio_2">Per periode</string>
+    <string name="recent_ingevoerd">Recent ingevoerde cijfers</string>
 
     //Activity names
     <string name="subjects">Vakken</string>
