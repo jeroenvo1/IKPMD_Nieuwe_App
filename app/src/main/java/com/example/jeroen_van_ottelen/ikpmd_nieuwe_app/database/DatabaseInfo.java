@@ -2,15 +2,16 @@ package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database;
 
 import android.provider.BaseColumns;
 /**
- * This class is used to hold all the table names and column names.
  * @author Richard Jongenburger
+ *
+ * This class is used to hold all the table names and column names.
  */
 
 public final class DatabaseInfo
 {
 	// To prevent someone from accidentally instantiating the contract class,
 	// give it an empty constructor.
-	public DatabaseInfo() {}
+	private DatabaseInfo() {}
 
 	public static abstract class Subjects implements BaseColumns
 	{

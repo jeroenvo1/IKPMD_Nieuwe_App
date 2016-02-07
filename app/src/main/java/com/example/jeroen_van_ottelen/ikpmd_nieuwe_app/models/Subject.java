@@ -2,6 +2,7 @@ package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models;
 
 /**
  * @author Richard Jongenburger
+ * Subject model
  */
 
 public class Subject {

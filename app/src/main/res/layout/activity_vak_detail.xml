@@ -29,21 +29,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="ECTS"
+            android:text="@string/subject_details_ects"
             android:id="@+id/textView9"
             android:layout_row="3"
             android:layout_column="0"
-            android:textSize="20dp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Periode"
+            android:text="@string/subject_details_period"
             android:id="@+id/textView4"
             android:layout_row="4"
             android:layout_column="0"
-            android:textSize="20dp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
             android:layout_column="13"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="17dp"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:singleLine="true"/>
 
         <TextView
@@ -66,34 +66,29 @@
             android:id="@+id/subjectPeriod"
             android:layout_row="4"
             android:layout_column="13"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textIsSelectable="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Cijfer"
+            android:text="@string/subject_details_grade"
             android:id="@+id/textView5"
             android:layout_row="5"
             android:layout_column="0"
-            android:textSize="20dp"/>
+            android:textSize="20sp"/>
 
         <EditText
-            android:layout_width="50dp"
+            android:layout_width="46dp"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
             android:id="@+id/grade"
-            android:layout_below="@+id/button3"
-            android:layout_toStartOf="@+id/button3"
             android:linksClickable="false"
-            android:editable="true"
-            android:layout_toLeftOf="@+id/button3"
             android:layout_row="5"
             android:layout_column="13"
-            android:maxLength="3"
-            />
+            android:maxLength="4"/>
 
 
     </GridLayout>
@@ -106,42 +101,32 @@
         android:id="@+id/subjectName"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="30dp"/>
+        android:textSize="30sp"/>
 
     <Button
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:text="@string/annuleer"
+        android:text="@string/subject_details_cancel"
         android:id="@+id/cancelBtn"
-        android:layout_marginTop="74dp"
-        android:layout_below="@+id/gridLayout2"
         android:background = "@drawable/button_selector"
-        android:layout_toLeftOf="@+id/subjectName"
-        android:layout_toStartOf="@+id/subjectName"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:layout_marginTop="70dp"
+        android:layout_below="@+id/gridLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="40dp"/>
 
     <Button
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:text="@string/opslaan"
+        android:text="@string/subject_details_submit"
         android:id="@+id/saveBtn"
         android:background = "@drawable/button_selector"
         android:textColor="@color/white"
         android:layout_alignTop="@+id/cancelBtn"
-        android:layout_toRightOf="@+id/subjectName"
-        android:layout_toEndOf="@+id/subjectName"/>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text=""
-        android:id="@+id/vak_details_error"
-        android:layout_below="@+id/gridLayout2"
         android:layout_alignRight="@+id/gridLayout2"
         android:layout_alignEnd="@+id/gridLayout2"
-        android:textColor="@color/red"/>
-
+        android:layout_marginRight="40dp"
+        />
 
 </RelativeLayout>
