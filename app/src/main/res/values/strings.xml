@@ -12,12 +12,12 @@
     <string name="subjects">Vakken</string>
     <string name="subject_details">Vak details</string>
 
-    //Subject
-    <string name="name">Name</string>
-    <string name="ects">ECTS </string>
-    <string name="period">Periode</string>
-    <string name="grade">Cijfer</string>
+    //VakDetails
+    <string name="subject_details_name">Name</string>
+    <string name="subject_details_ects">ECTS </string>
+    <string name="subject_details_period">Periode</string>
+    <string name="subject_details_grade">Cijfer</string>
 
-    <string name="opslaan">Opslaan</string>
-    <string name="annuleer">Annuleer</string>
+    <string name="subject_details_submit">Opslaan</string>
+    <string name="subject_details_cancel">Annuleer</string>
 </resources>

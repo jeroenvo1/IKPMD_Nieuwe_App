@@ -15,45 +15,49 @@ import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvoerActivity extends ActionBarActivity {
+/**
+ * @author Richard Jongenburger
+ * This activity represents the screen where u can pick a subject that are in the database.
+ */
 
-	private ListView subjectList;
-	private ArrayAdapter adapter;
-	private List<String> subjectNames;
-	private List<Subject> subjects;
-	private Subject selectedSubject;
-
-	private DatabaseReceiver databaseReceiver;
+public class InvoerActivity extends ActionBarActivity
+{
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_invoer);
 
-		databaseReceiver = databaseReceiver.getDatabaseReceiver(this);
-		subjects = databaseReceiver.getAllSubjects();
+		DatabaseReceiver databaseReceiver = DatabaseReceiver.getDatabaseReceiver(this);
+		final List<Subject> subjects = databaseReceiver.getAllSubjects();
 
-		subjectList = (ListView) findViewById(R.id.subjectList);
+		ListView subjectList = (ListView) findViewById(R.id.subjectList);
+
 		subjectList.setClickable(true);
-		subjectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		subjectList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
 			@Override
-			public void onItemClick(AdapterView<?> view, View arg1, int position, long arg3) {
-				selectedSubject = subjects.get(position);
+			public void onItemClick(AdapterView<?> view, View arg1, int position, long arg3)
+			{
+				Subject selectedSubject = subjects.get(position);
 				Intent intent = new Intent(view.getContext(), VakDetailActivity.class);
+
+				// Give the name of the clicked subject to VakDetailActivity.
 				intent.putExtra("subjectName", selectedSubject.getName());
 				startActivity(intent);
 			}
 		});
 
-		subjectNames = new ArrayList<>();
+		// We have to give string of subject names to adapter.
+		ArrayList<String> subjectNames = new ArrayList<>();
 
 		for(Subject subject : subjects)
 		{
 			subjectNames.add(subject.getName());
 		}
 
-		adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, subjectNames);
+		ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, subjectNames);
 		subjectList.setAdapter(adapter);
-
 	}
 }
