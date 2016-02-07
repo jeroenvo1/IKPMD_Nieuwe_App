@@ -79,6 +79,12 @@ public class OverzichtActivity extends ActionBarActivity
     // Barchart waar alle cijfers van alle vakken in staan
     public void setBarByGrade(View view)
     {
+        // Stop het maken van de chart als de student nog nooit cijfers heeft ingevuld.
+        if(db.getAllInsertedSubjects().size() == 0)
+        {
+            return;
+        }
+
         period = false;
 
         // Naam in de tabel zetten
@@ -88,7 +94,7 @@ public class OverzichtActivity extends ActionBarActivity
         if(selectedPeriod != 10) {
             cijfers = db.getSubjectsByPeriod(selectedPeriod);
         } else {
-            cijfers = db.getAllSubjects();
+            cijfers = db.getAllInsertedSubjects();
         }
 
         // Een ArrayList van de x en y as maken
@@ -187,7 +193,13 @@ public class OverzichtActivity extends ActionBarActivity
             List<String> list = new ArrayList<>();
             list.add("Aantal studiepunten: " + subject.getEcts());
             list.add("Periode: " + subject.getPeriod());
-            list.add("Cijfer: " + subject.getGrade());
+
+            if(subject.getGrade() != 0) {
+                list.add("Cijfer: " + subject.getGrade());
+            } else {
+                list.add("Vak nog niet gevolgd");
+            }
+
             listDataChild.put(listDataHeader.get(i), list);
             i++;
         }

@@ -112,10 +112,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
                 lblListHeader.setTypeface(null, Typeface.BOLD);
                 lblListHeader.setText(headerTitle);
             }
-            else
+            else if(_subjects.get(groupPosition).getGrade() >0 && _subjects.get(groupPosition).getGrade() < 5.5)
             {
                 convertView = infalInflater.inflate(R.layout.list_group_red, null);
                 TextView lblListHeader = (TextView) convertView.findViewById(R.id.listHeaderRed);
+                lblListHeader.setTypeface(null, Typeface.BOLD);
+                lblListHeader.setText(headerTitle);
+            } else
+            {
+                convertView = infalInflater.inflate(R.layout.list_group, null);
+                TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
                 lblListHeader.setTypeface(null, Typeface.BOLD);
                 lblListHeader.setText(headerTitle);
             }

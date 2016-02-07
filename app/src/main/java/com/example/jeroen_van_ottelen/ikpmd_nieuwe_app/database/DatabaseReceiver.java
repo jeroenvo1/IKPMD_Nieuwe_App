@@ -23,7 +23,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	public static SQLiteDatabase database;
 	private static DatabaseReceiver databaseReceiver;
 	public static final String DATABASE_NAME = "database.db";
-	public static final int DATABASE_VERSION = 2;
+	public static final int DATABASE_VERSION = 3;
 	private Context context;
 
 	private DatabaseReceiver(Context context)
@@ -94,6 +94,12 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		return database.query(table, columns, selection, selectArgs, groupBy, having, orderBy);
 	}
 
+	public void resetDB()
+	{
+		Cursor c = database.rawQuery("DELETE FROM subject", null);
+		c.moveToNext();
+	}
+
 	public void insertSubject(Subject subject)
 	{
 		// Insert the subject in the database when the subject doesn't already exist in the database.
@@ -159,6 +165,26 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 			subjects.add(subject);
 		}
 		
+		return subjects;
+	}
+
+	public List<Subject>  getAllInsertedSubjects()
+	{
+		List<Subject> subjects = new ArrayList<>();
+
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_GRADE + ">0", null, null, null, null);
+
+		while(c.moveToNext())
+		{
+			Subject subject = new Subject();
+			subject.setName(c.getString(0));
+			subject.setEcts(c.getInt(1));
+			subject.setPeriod(c.getInt(2));
+			subject.setGrade(c.getInt(3));
+
+			subjects.add(subject);
+		}
+
 		return subjects;
 	}
 
@@ -228,6 +254,10 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		barList.add(new BarEntry(c.getInt(0), 3));
 
 		return barList;
+
+//		if(c.getInt(0) != 0) {
+//			barList.add(new BarEntry(c.getInt(0), 0));
+//		}
 	}
 
 	public int[] getMaxEctsPerPeriod()
@@ -255,5 +285,16 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		ects[3] = c.getInt(0);
 
 		return ects;
+	}
+
+	public int getCurrentEcts()
+	{
+		Cursor c = database.rawQuery("SELECT SUM(ects)\n" +
+				"FROM subject\n" +
+				"WHERE  grade > 0", null);
+
+		c.moveToNext();
+
+		return c.getInt(0);
 	}
 }

@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,8 +32,11 @@ public class MainActivity extends ActionBarActivity
 
     private SharedPreferences SP;
     private SharedPreferences.Editor editor;
+    private DatabaseReceiver db;
 
     private TextView user_name;
+    private TextView studiepuntenText;
+    private int studiepunten;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,12 +45,19 @@ public class MainActivity extends ActionBarActivity
         requestSubjects();
         setContentView(R.layout.activity_main);
 
+        db = DatabaseReceiver.getDatabaseReceiver(this);
+
         // PreferenceManager en editor aanmaken.
         SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         editor = SP.edit();
 
-        // Textview user_name maken
+        studiepunten = db.getCurrentEcts();
+
+        // Textview user_name en studiepuntenText maken
         user_name = (TextView) findViewById(R.id.naam_user);
+        studiepuntenText = (TextView) findViewById(R.id.studiepuntenText);
+        studiepuntenText.setText("Totaal aantal studiepunten: " + studiepunten);
+
 
         // Als er nog nooi een naam is ingevoerd, voer die dan in
         if(SP.getString("username", null) == null)
@@ -84,7 +95,58 @@ public class MainActivity extends ActionBarActivity
         {
             user_name.setText(SP.getString("username", null));
         }
-        DatabaseReceiver.getDatabaseReceiver(this);
+    }
+
+    public void showCijfers(View view)
+    {
+
+        // Maak een allert scherm en zet de naam
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Studiepunten");
+
+        // Input maken
+        final TextView text1 = new TextView(this);
+
+        if(studiepunten == 60)
+        {
+            text1.setText("Aantal studiepunten: " + studiepunten + "\n" +
+                    "Propedeuse gehaald.");
+        }
+        else if(studiepunten >= 50 && studiepunten < 60)
+        {
+            text1.setText("Aantal studiepunten: " + studiepunten + "\n" +
+                    "Voldoende studiepunten gehaald om naar het tweede jaar te gaan, maar ropedeuse nog niet gehaald.");
+        }
+        else if(studiepunten >= 40 && studiepunten < 50)
+        {
+            text1.setText("Aantal studiepunten: " + studiepunten + "\n" +
+                    "Voldoende studiepunten gehaald om geen negatief BSA te krijgen, maar nog niet genoeg om naar het tweede jaar te gaan.");
+        } else
+        {
+            text1.setText("Aantal studiepunten: " + studiepunten + "\n" +
+                    "Helaas niet voldoende studiepunten gehaald, je krijgt een negatief BSA");
+        }
+
+        builder.setView(text1);
+
+        // Buttons en onClickListemer maken
+        builder.setNegativeButton("Annuleer", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+            }
+        });
+
+        // Buttons en onClickListemer maken
+        builder.setPositiveButton("Overzicht", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                startActivity(new Intent(MainActivity.this, OverzichtActivity.class));
+            }
+        });
+
+        builder.show();
     }
 
     @Override
@@ -111,6 +173,12 @@ public class MainActivity extends ActionBarActivity
         } else if(id == R.id.menu_overzicht)
         {
             startActivity(new Intent(this, OverzichtActivity.class));
+        } else if(id == R.id.reset_preferences)
+        {
+            editor.clear();
+            editor.commit();
+
+            db.resetDB();
         }
 
         return super.onOptionsItemSelected(item);
