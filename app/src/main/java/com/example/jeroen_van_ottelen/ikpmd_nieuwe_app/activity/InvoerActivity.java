@@ -1,4 +1,4 @@
-package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app;
+package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.VakDetailActivity;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
 
@@ -19,13 +19,11 @@ public class InvoerActivity extends ActionBarActivity {
 
 	private ListView subjectList;
 	private ArrayAdapter adapter;
-
 	private List<String> subjectNames;
 	private List<Subject> subjects;
 	private Subject selectedSubject;
 
 	private DatabaseReceiver databaseReceiver;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,6 @@ public class InvoerActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_invoer);
 
 		databaseReceiver = databaseReceiver.getDatabaseReceiver(this);
-
 		subjects = databaseReceiver.getAllSubjects();
 
 		subjectList = (ListView) findViewById(R.id.subjectList);

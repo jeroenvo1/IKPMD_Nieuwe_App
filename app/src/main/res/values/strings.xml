@@ -7,4 +7,17 @@
     <string name="reset">Reset</string>
     <string name="overzicht_radio_1">Per vak</string>
     <string name="overzicht_radio_2">Per periode</string>
+
+    //Activity names
+    <string name="subjects">Vakken</string>
+    <string name="subject_details">Vak details</string>
+
+    //Subject
+    <string name="name">Name</string>
+    <string name="ects">ECTS </string>
+    <string name="period">Periode</string>
+    <string name="grade">Cijfer</string>
+
+    <string name="opslaan">Opslaan</string>
+    <string name="annuleer">Annuleer</string>
 </resources>

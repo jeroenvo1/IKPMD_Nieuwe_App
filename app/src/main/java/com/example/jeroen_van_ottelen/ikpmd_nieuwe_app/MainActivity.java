@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.InvoerActivity;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.OverzichtActivity;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.gson.GsonRequest;
@@ -107,7 +108,7 @@ public class MainActivity extends ActionBarActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_invoeren)
         {
-            startActivity(new Intent(this, com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.InvoerActivity.class));
+            startActivity(new Intent(this, InvoerActivity.class));
         } else if(id == R.id.menu_overzicht)
         {
             startActivity(new Intent(this, OverzichtActivity.class));
