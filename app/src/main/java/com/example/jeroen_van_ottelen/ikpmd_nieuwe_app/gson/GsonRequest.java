@@ -16,9 +16,9 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * @author Richard Jongenburger
- * @param <T>
+ * @author From the elo sheets
  */
+
 public class GsonRequest<T> extends Request<T> {
 	private final Gson gson = new Gson();
 	private final Class<T> mClazz;
@@ -34,7 +34,6 @@ public class GsonRequest<T> extends Request<T> {
 	 * @param clazz   Relevant class object, for Gson's reflection
 	 * @param headers Map of request headers
 	 */
-
 	public GsonRequest(String url, Class<T> clazz, Map<String, String> headers,
 					   Response.Listener<T> listener, Response.ErrorListener errorListener) {
 		super(Method.GET, url, errorListener);
@@ -44,7 +43,6 @@ public class GsonRequest<T> extends Request<T> {
 		this.listener = listener;
 	}
 
-	// Add this constructor : (replace Class<T>  with Type ) (Zodat we een lijst met types terug kunnen krijgen i.p.v. 1 class )
 	public GsonRequest(String url, Type type, Map<String, String> headers,
 					   Response.Listener<T> listener, Response.ErrorListener errorListener) {
 		super(Method.GET, url, errorListener);

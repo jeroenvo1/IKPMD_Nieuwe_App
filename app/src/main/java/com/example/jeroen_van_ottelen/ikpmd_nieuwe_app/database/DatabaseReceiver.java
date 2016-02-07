@@ -13,10 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author Richard Jongenburger && Jeroen van Ottelen
+ *
  * This class creates and handles everything in the database.
  * It's singleton so that you can only have one instance of this class.
  *
- * @author Richard Jongenburger
  */
 
 public class DatabaseReceiver extends SQLiteOpenHelper {
@@ -29,7 +30,6 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 
 	private DatabaseReceiver(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		this.context = context;
 	}
 
 	public static synchronized DatabaseReceiver getDatabaseReceiver(Context context) {
@@ -40,11 +40,6 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		return databaseReceiver;
 	}
 
-	/**
-	 * Create all the tables from the database.
-	 *
-	 * @param db The database in which the tables should be created.
-	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + DatabaseInfo.Subjects.TABLE_NAME + " (" +
@@ -106,8 +101,6 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 			cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
 
 			insert(DatabaseInfo.Subjects.TABLE_NAME, null, cv);
-		} else {
-			System.out.println("Subject already exists in database!");
 		}
 	}
 
@@ -149,6 +142,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_ECTS, subject.getEcts());
 		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_PERIOD, subject.getPeriod());
 		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
+
 		database.update(DatabaseInfo.Subjects.TABLE_NAME, cv, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "= '" + subject.getName() + "'", null);
 	}
 

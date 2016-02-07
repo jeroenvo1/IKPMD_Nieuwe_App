@@ -9,6 +9,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * @author From the elo sheets
+ */
+
 public class VolleyHelper {
 
 	private static VolleyHelper mInstance;
@@ -35,7 +39,7 @@ public class VolleyHelper {
 						cache.put(url, bitmap);
 					}
 				});
-	}    // CONTINUE ON NEXT
+	}
 
 	public static synchronized VolleyHelper getInstance(Context context) {
 		if (mInstance == null) {

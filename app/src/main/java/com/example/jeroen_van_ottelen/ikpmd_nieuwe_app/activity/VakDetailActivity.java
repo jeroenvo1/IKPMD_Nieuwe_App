@@ -1,11 +1,10 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,57 +14,84 @@ import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
 
-public class VakDetailActivity extends ActionBarActivity {
+/**
+ * @author Richard Jongenburger
+ * Activity with subject details.
+ */
 
-	private DatabaseReceiver databaseReceiver;
-
-	private TextView nameView;
-	private TextView ectsView;
-	private TextView periodView;
-	private TextView gradeView;
+public class VakDetailActivity extends ActionBarActivity
+{
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vak_detail);
 
 		final String subjectName = getIntent().getStringExtra("subjectName");
-		databaseReceiver = databaseReceiver.getDatabaseReceiver(this);
+		final DatabaseReceiver databaseReceiver = DatabaseReceiver.getDatabaseReceiver(this);
 
 		final Subject subject = databaseReceiver.getSubject(subjectName);
 
 		// Set all the texts of the variables on the screen.
-		nameView = (TextView) findViewById(R.id.subjectName);
+		final TextView nameView = (TextView) findViewById(R.id.subjectName);
 		nameView.setText(subject.getName());
 
-		ectsView = (TextView) findViewById(R.id.subjectEcts);
-		ectsView.setText(subject.getEcts() + "");
+		final TextView ectsView = (TextView) findViewById(R.id.subjectEcts);
+		String ects = subject.getEcts() + "";
+		ectsView.setText(ects);
 
-		periodView = (TextView) findViewById(R.id.subjectPeriod);
-		periodView.setText(subject.getPeriod() + "");
+		final TextView periodView = (TextView) findViewById(R.id.subjectPeriod);
+		String period = subject.getPeriod() + "";
+		periodView.setText(period);
 
-		gradeView = (EditText) findViewById(R.id.grade);
+		final TextView gradeView = (EditText) findViewById(R.id.grade);
 
-		if(subject.getGrade() == 0.0f) {
+		if(subject.getGrade() == 0.0f)
+		{
 			gradeView.setText("");
 		}
-		else {
-			gradeView.setText(subject.getGrade() + "");
+		else
+		{
+			if(subject.getGrade() > 5.5)
+			{
+				gradeView.setTextColor(getResources().getColor(R.color.dark_green));
+			}
+			else
+			{
+				gradeView.setTextColor(Color.RED);
+			}
+			String grade = subject.getGrade() + "";
+			gradeView.setText(grade);
 		}
 
+		// Set color to black again when the text change.
+		gradeView.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				gradeView.setTextColor(Color.BLACK);
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
 
 		// Go back to previous activity when u press on cancel
 		Button cancelBtn = (Button) findViewById(R.id.cancelBtn);
-		cancelBtn.setOnClickListener(new View.OnClickListener() {
+		cancelBtn.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
 
-		// Save the subject and go back to previous activity
 		final Button saveBtn = (Button) findViewById(R.id.saveBtn);
-
 		saveBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -73,34 +99,39 @@ public class VakDetailActivity extends ActionBarActivity {
 				subject.setPeriod(Integer.parseInt(periodView.getText().toString()));
 
 				String grade = gradeView.getText().toString();
-				TextView errorView = (TextView) findViewById(R.id.vak_details_error);
 
-				if(grade.isEmpty())
-				{
+				// Return to previous activity if there is nothing filled in.
+				if (grade.isEmpty()) {
 					finish();
 					return;
-				}
-				else
-				{
-					subject.setGrade(Float.parseFloat(gradeView.getText().toString()));
+				} else {
+					subject.setGrade(Float.parseFloat(grade));
 				}
 
-				if((subject.getGrade() + "").charAt(1) != '.')
-				{
-					errorView.setText("Cijfer moet '1.0' formaat hebben");
-				}
-				else if(subject.getGrade() < 1.0f)
-				{
-					errorView.setText("Cijfer moet minimaal 1.0 zijn");
-				}
-				else
-				{
+				if (validateGrade(subject.getGrade(), gradeView)) {
 					databaseReceiver.updateSubject(subject);
 					finish();
 				}
-		}});
+			}
+		});
+	}
 
+	public boolean validateGrade(float grade, TextView editText)
+	{
+		if(grade < 1.0 || grade > 10.0)
+		{
+			editText.setError("Cijfer moet tussen 1.0 en 10.0 zijn");
+			return false;
+		}
 
+		if(grade == 10.0 || ((grade + "").length() == 3 && (grade + "").charAt(1) == '.'))
+		{
+			return true;
+		}
+		else {
+			editText.setError("Cijfer moet '1.0' formaat hebben");
+			return false;
+		}
 	}
 }
 
