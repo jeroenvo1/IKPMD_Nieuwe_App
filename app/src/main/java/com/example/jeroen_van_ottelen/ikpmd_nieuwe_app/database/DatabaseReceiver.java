@@ -276,13 +276,23 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		return c.getInt(0);
 	}
 
-	public void updateSubject(Subject subject) {
-		// Insert the subject in the database when the subject doesn't already exist in the database.
-		ContentValues cv = new ContentValues();
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_NAME, subject.getName());
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_ECTS, subject.getEcts());
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_PERIOD, subject.getPeriod());
-		cv.put(DatabaseInfo.Subjects.COLUMN_NAME_GRADE, subject.getGrade());
-		database.update(DatabaseInfo.Subjects.TABLE_NAME, cv, DatabaseInfo.Subjects.COLUMN_NAME_NAME + "= '" + subject.getName() + "'", null);
+	public List<Subject>  getAllInsertedSubjects()
+	{
+		List<Subject> subjects = new ArrayList<>();
+
+		Cursor c = query(DatabaseInfo.Subjects.TABLE_NAME, null, DatabaseInfo.Subjects.COLUMN_NAME_GRADE + ">0", null, null, null, null);
+
+		while(c.moveToNext())
+		{
+			Subject subject = new Subject();
+			subject.setName(c.getString(0));
+			subject.setEcts(c.getInt(1));
+			subject.setPeriod(c.getInt(2));
+			subject.setGrade(c.getInt(3));
+
+			subjects.add(subject);
+		}
+
+		return subjects;
 	}
 }

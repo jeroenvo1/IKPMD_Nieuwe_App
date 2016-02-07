@@ -1,11 +1,10 @@
 package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -92,9 +91,7 @@ public class VakDetailActivity extends ActionBarActivity
 			}
 		});
 
-		// Save the subject and go back to previous activity
 		final Button saveBtn = (Button) findViewById(R.id.saveBtn);
-
 		saveBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -102,7 +99,6 @@ public class VakDetailActivity extends ActionBarActivity
 				subject.setPeriod(Integer.parseInt(periodView.getText().toString()));
 
 				String grade = gradeView.getText().toString();
-				TextView errorView = (TextView) findViewById(R.id.vak_details_error);
 
 				// Return to previous activity if there is nothing filled in.
 				if (grade.isEmpty()) {
@@ -138,4 +134,3 @@ public class VakDetailActivity extends ActionBarActivity
 		}
 	}
 }
-
