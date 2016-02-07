@@ -94,12 +94,6 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		return database.query(table, columns, selection, selectArgs, groupBy, having, orderBy);
 	}
 
-	public void resetDB()
-	{
-		Cursor c = database.rawQuery("DELETE FROM subject", null);
-		c.moveToNext();
-	}
-
 	public void insertSubject(Subject subject)
 	{
 		// Insert the subject in the database when the subject doesn't already exist in the database.
@@ -254,10 +248,6 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		barList.add(new BarEntry(c.getInt(0), 3));
 
 		return barList;
-
-//		if(c.getInt(0) != 0) {
-//			barList.add(new BarEntry(c.getInt(0), 0));
-//		}
 	}
 
 	public int[] getMaxEctsPerPeriod()
@@ -285,16 +275,5 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 		ects[3] = c.getInt(0);
 
 		return ects;
-	}
-
-	public int getCurrentEcts()
-	{
-		Cursor c = database.rawQuery("SELECT SUM(ects)\n" +
-				"FROM subject\n" +
-				"WHERE  grade > 0", null);
-
-		c.moveToNext();
-
-		return c.getInt(0);
 	}
 }
