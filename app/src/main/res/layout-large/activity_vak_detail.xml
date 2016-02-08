@@ -11,19 +11,16 @@
     tools:context="com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.VakDetailActivity">
 
     <GridLayout
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:id="@+id/gridLayout2"
         android:orientation="horizontal"
         android:rowCount="6"
         android:columnCount="14"
         android:horizontalSpacing="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_marginTop="63dp"
+        android:layout_below="@+id/subjectName"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,11 +107,10 @@
         android:id="@+id/cancelBtn"
         android:background = "@drawable/button_selector"
         android:textColor="@color/white"
-        android:layout_marginTop="72dp"
         android:layout_below="@+id/gridLayout2"
         android:layout_alignLeft="@+id/gridLayout2"
         android:layout_alignStart="@+id/gridLayout2"
-        android:layout_marginLeft="40dp"/>
+        android:layout_marginTop="168dp"/>
 
     <Button
         android:layout_width="100dp"
@@ -124,8 +120,7 @@
         android:background = "@drawable/button_selector"
         android:textColor="@color/white"
         android:layout_alignTop="@+id/cancelBtn"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="40dp"/>
+        android:layout_alignRight="@+id/gridLayout2"
+        android:layout_alignEnd="@+id/gridLayout2"/>
 
 </RelativeLayout>
