@@ -11,8 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.TinyDB.TinyDB;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
+
+import java.util.ArrayList;
 
 /**
  * @author Richard Jongenburger
@@ -22,11 +25,15 @@ import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;
 public class VakDetailActivity extends ActionBarActivity
 {
 
+	private TinyDB tinydb;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vak_detail);
+
+		tinydb = new TinyDB(this);
 
 		final String subjectName = getIntent().getStringExtra("subjectName");
 		final DatabaseReceiver databaseReceiver = DatabaseReceiver.getDatabaseReceiver(this);
@@ -110,6 +117,20 @@ public class VakDetailActivity extends ActionBarActivity
 
 				if (validateGrade(subject.getGrade(), gradeView)) {
 					databaseReceiver.updateSubject(subject);
+
+					if(tinydb.getListObject("recentIngevoerd", Subject.class).size() != 0) {
+
+						ArrayList<Subject> subjectList = tinydb.getListObject("recentIngevoerd", Subject.class);
+						subjectList.add(subject);
+
+						tinydb.putListObject("recentIngevoerd", subjectList);
+					} else {
+						ArrayList<Subject> subjectList = new ArrayList<>();
+						subjectList.add(subject);
+
+						tinydb.putListObject("recentIngevoerd", subjectList);
+					}
+
 					finish();
 				}
 			}
