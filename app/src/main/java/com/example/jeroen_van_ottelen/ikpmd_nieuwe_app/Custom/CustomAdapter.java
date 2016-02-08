@@ -1,4 +1,4 @@
-package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.CustomAdapter;
+package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.Custom;
 
 import android.content.Context;
 import android.view.LayoutInflater;

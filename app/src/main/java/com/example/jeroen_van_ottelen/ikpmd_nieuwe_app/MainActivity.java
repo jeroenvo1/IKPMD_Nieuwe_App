@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.CustomAdapter.CustomAdapter;
-import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.TinyDB.TinyDB;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.Custom.CustomAdapter;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.Custom.CustomSharedPreferences;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.InvoerActivity;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.OverzichtActivity;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
@@ -32,7 +32,7 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity
 {
 
-    private TinyDB tinyDB;
+    private CustomSharedPreferences prefs;
     private DatabaseReceiver db;
 
     private TextView user_name;
@@ -41,7 +41,6 @@ public class MainActivity extends ActionBarActivity
 
     private ListView recentIngevoerd;
     private CustomAdapter adapter;
-    private List<String> recentIngevoerdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,8 +51,8 @@ public class MainActivity extends ActionBarActivity
 
         db = DatabaseReceiver.getDatabaseReceiver(this);
 
-        // PreferenceManager aanmaken in de vorm van TinyDB (nodig om objecten te kunnen opslaan
-        tinyDB = new TinyDB(this);
+        // Custom PreferenceManager aanmaken (nodig om objecten te kunnen opslaan
+        prefs = new CustomSharedPreferences(this);
 
         studiepunten = db.getCurrentEcts();
 
@@ -63,7 +62,7 @@ public class MainActivity extends ActionBarActivity
         studiepuntenText.setText("Totaal aantal studiepunten: " + studiepunten);
 
         // Als er nog nooit een naam is ingevoerd, voer die dan in
-        if(tinyDB.getString("username") == null)
+        if(prefs.getString("username") == null)
         {
             // Maak een allert scherm en zet de naam
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -82,10 +81,10 @@ public class MainActivity extends ActionBarActivity
                 public void onClick(DialogInterface dialog, int which) {
                     // Als er op de button geklikt wordt, zet de ingevoerde naam (username) in de
                     // preferences en commit hem.
-                    tinyDB.putString("username", input.getText().toString());
+                    prefs.putString("username", input.getText().toString());
 
                     // Haal de naam uit de preference, en zet hem in het textvak
-                    user_name.setText(tinyDB.getString("username"));
+                    user_name.setText(prefs.getString("username"));
                 }
             });
 
@@ -95,14 +94,11 @@ public class MainActivity extends ActionBarActivity
         // het in het textvak.
         else
         {
-            user_name.setText(tinyDB.getString("username"));
+            user_name.setText(prefs.getString("username"));
         }
 
         recentIngevoerd = (ListView) findViewById(R.id.recent_ingevoerd_list);
-
-//        recentIngevoerdList = tinyDB.getListObject("recentIngevoerd", Subject.class);
-
-        adapter = new CustomAdapter(this, 0, tinyDB.getListObject("recentIngevoerd", Subject.class));
+        adapter = new CustomAdapter(this, 0, prefs.getListObject("recentIngevoerd"));
         recentIngevoerd.setAdapter(adapter);
     }
 
@@ -184,7 +180,7 @@ public class MainActivity extends ActionBarActivity
             startActivity(new Intent(this, OverzichtActivity.class));
         } else if(id == R.id.reset_preferences)
         {
-            tinyDB.clear();
+            prefs.clear();
             db.resetDB();
         }
 
