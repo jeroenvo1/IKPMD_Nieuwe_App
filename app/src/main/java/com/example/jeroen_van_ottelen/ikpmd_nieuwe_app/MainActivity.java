@@ -4,21 +4,20 @@ package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.CustomAdapter.CustomAdapter;
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.TinyDB.TinyDB;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.InvoerActivity;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity.OverzichtActivity;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
@@ -28,14 +27,12 @@ import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.volley.VolleyHelper;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity
 {
 
-    private SharedPreferences SP;
-    private SharedPreferences.Editor editor;
+    private TinyDB tinyDB;
     private DatabaseReceiver db;
 
     private TextView user_name;
@@ -43,7 +40,7 @@ public class MainActivity extends ActionBarActivity
     private int studiepunten;
 
     private ListView recentIngevoerd;
-    private ArrayAdapter adapter;
+    private CustomAdapter adapter;
     private List<String> recentIngevoerdList;
 
     @Override
@@ -55,9 +52,8 @@ public class MainActivity extends ActionBarActivity
 
         db = DatabaseReceiver.getDatabaseReceiver(this);
 
-        // PreferenceManager en editor aanmaken.
-        SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        editor = SP.edit();
+        // PreferenceManager aanmaken in de vorm van TinyDB (nodig om objecten te kunnen opslaan
+        tinyDB = new TinyDB(this);
 
         studiepunten = db.getCurrentEcts();
 
@@ -66,9 +62,8 @@ public class MainActivity extends ActionBarActivity
         studiepuntenText = (TextView) findViewById(R.id.studiepuntenText);
         studiepuntenText.setText("Totaal aantal studiepunten: " + studiepunten);
 
-
         // Als er nog nooit een naam is ingevoerd, voer die dan in
-        if(SP.getString("username", null) == null)
+        if(tinyDB.getString("username") == null)
         {
             // Maak een allert scherm en zet de naam
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -87,11 +82,10 @@ public class MainActivity extends ActionBarActivity
                 public void onClick(DialogInterface dialog, int which) {
                     // Als er op de button geklikt wordt, zet de ingevoerde naam (username) in de
                     // preferences en commit hem.
-                    editor.putString("username", input.getText().toString());
-                    editor.commit();
+                    tinyDB.putString("username", input.getText().toString());
 
                     // Haal de naam uit de preference, en zet hem in het textvak
-                    user_name.setText(SP.getString("username", null));
+                    user_name.setText(tinyDB.getString("username"));
                 }
             });
 
@@ -101,14 +95,14 @@ public class MainActivity extends ActionBarActivity
         // het in het textvak.
         else
         {
-            user_name.setText(SP.getString("username", null));
+            user_name.setText(tinyDB.getString("username"));
         }
 
         recentIngevoerd = (ListView) findViewById(R.id.recent_ingevoerd_list);
 
-        recentIngevoerdList = new ArrayList<>();
+//        recentIngevoerdList = tinyDB.getListObject("recentIngevoerd", Subject.class);
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, recentIngevoerdList);
+        adapter = new CustomAdapter(this, 0, tinyDB.getListObject("recentIngevoerd", Subject.class));
         recentIngevoerd.setAdapter(adapter);
     }
 
@@ -190,9 +184,7 @@ public class MainActivity extends ActionBarActivity
             startActivity(new Intent(this, OverzichtActivity.class));
         } else if(id == R.id.reset_preferences)
         {
-            editor.clear();
-            editor.commit();
-
+            tinyDB.clear();
             db.resetDB();
         }
 
