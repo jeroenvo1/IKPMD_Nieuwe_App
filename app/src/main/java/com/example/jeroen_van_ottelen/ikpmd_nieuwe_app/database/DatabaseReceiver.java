@@ -269,7 +269,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	{
 		Cursor c = database.rawQuery("SELECT SUM(ects)\n" +
 				"FROM subject\n" +
-				"WHERE  grade > 0", null);
+				"WHERE  grade > 5.5", null);
 
 		c.moveToNext();
 

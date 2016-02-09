@@ -1,4 +1,5 @@
 <resources>
+    // Strings die gemaakt zijn door Jeroen van Ottelen
     <string name="action_settings">HS Leiden</string>
     <string name="app_name">HS Leiden</string>
     <string name="menu_item_1">Invoeren</string>
@@ -9,9 +10,11 @@
     <string name="overzicht_radio_2">Per periode</string>
     <string name="recent_ingevoerd">Recent ingevoerde cijfers</string>
 
-    //Activity names
+    // Strings die gemaakt zijn door Richard Jongenburger
+    // Activity names
     <string name="subjects">Vakken</string>
     <string name="subject_details">Vak details</string>
+    <string name="overview">Overzicht</string>
 
     //VakDetails
     <string name="subject_details_name">Name</string>

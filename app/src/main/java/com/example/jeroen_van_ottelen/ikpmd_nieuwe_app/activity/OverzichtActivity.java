@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Jeroen van Ottelen
+ */
+
 public class OverzichtActivity extends ActionBarActivity
 {
 
