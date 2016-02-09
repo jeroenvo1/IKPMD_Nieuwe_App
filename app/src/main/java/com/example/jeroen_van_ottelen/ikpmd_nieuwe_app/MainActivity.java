@@ -2,6 +2,8 @@ package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app;
 
 /**
  *  Jeroen van Ottelen
+ *
+ *  Richard Jongenburger - Jaargang, No connection gemaakt
  */
 
 import android.app.AlertDialog;
