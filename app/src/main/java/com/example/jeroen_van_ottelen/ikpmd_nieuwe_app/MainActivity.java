@@ -56,10 +56,7 @@ public class MainActivity extends ActionBarActivity
 
         studiepunten = db.getCurrentEcts();
 
-        // Textview user_name en studiepuntenText maken
-        user_name = (TextView) findViewById(R.id.naam_user);
-        studiepuntenText = (TextView) findViewById(R.id.studiepuntenText);
-        studiepuntenText.setText("Totaal aantal studiepunten: " + studiepunten);
+        resumableData();
 
         // Als er nog nooit een naam is ingevoerd, voer die dan in
         if(prefs.getString("username") == null)
@@ -96,10 +93,33 @@ public class MainActivity extends ActionBarActivity
         {
             user_name.setText(prefs.getString("username"));
         }
+    }
+
+    public void resumableData()
+    {
+        // Textview user_name en studiepuntenText maken
+        user_name = (TextView) findViewById(R.id.naam_user);
+        studiepuntenText = (TextView) findViewById(R.id.studiepuntenText);
+        studiepuntenText.setText("Totaal aantal studiepunten: " + studiepunten);
 
         recentIngevoerd = (ListView) findViewById(R.id.recent_ingevoerd_list);
         adapter = new CustomAdapter(this, 0, prefs.getListObject("recentIngevoerd"));
         recentIngevoerd.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        resumableData();
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
     public void showCijfers(View view)
@@ -175,13 +195,13 @@ public class MainActivity extends ActionBarActivity
         if (id == R.id.menu_invoeren)
         {
             startActivity(new Intent(this, InvoerActivity.class));
-        } else if(id == R.id.menu_overzicht)
-        {
+        } else if(id == R.id.menu_overzicht) {
             startActivity(new Intent(this, OverzichtActivity.class));
         } else if(id == R.id.reset_preferences)
         {
             prefs.clear();
             db.resetDB();
+            onRestart();
         }
 
         return super.onOptionsItemSelected(item);

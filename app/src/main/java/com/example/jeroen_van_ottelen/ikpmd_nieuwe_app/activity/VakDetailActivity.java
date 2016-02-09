@@ -118,7 +118,8 @@ public class VakDetailActivity extends ActionBarActivity
 				if (validateGrade(subject.getGrade(), gradeView)) {
 					databaseReceiver.updateSubject(subject);
 
-					if(prefs.isListEmpty("recentIngevoerd")) {
+					if(prefs.isListEmpty("recentIngevoerd"))
+					{
 						prefs.putSubject("recentIngevoerd", subject);
 					} else {
 						ArrayList<Subject> subjectList = new ArrayList<>();

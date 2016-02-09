@@ -86,10 +86,10 @@ public class CustomSharedPreferences
 
         if(getListObject(name).size() != 0)
         {
-            return false;
+            return true;
         } else
         {
-            return true;
+            return false;
         }
 
     }
