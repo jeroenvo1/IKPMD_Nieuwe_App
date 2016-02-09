@@ -295,4 +295,25 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 
 		return subjects;
 	}
+
+	// Controleer of er kans is op een BSA. Een student kan maximaal 21 studiepunten missen, als dit
+	// het geval is dan krijgt hij/zij een BSA. Als de student tussen de 15 en 20 punten gemist heeft,
+	// dan krijgt hij een melding dat hij/zij een kans op een BSA heeft.
+	public Boolean bsaCheck()
+	{
+		Cursor c = database.rawQuery("SELECT sum(ects)\n" +
+				"FROM subject\n" +
+				"WHERE grade < '5,5' AND grade > '0'", null);
+
+		c.moveToNext();
+		int ects = c.getInt(0);
+
+		if(ects >= 15 && ects <= 20)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
 }
