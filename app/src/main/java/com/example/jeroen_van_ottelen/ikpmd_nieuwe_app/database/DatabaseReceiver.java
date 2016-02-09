@@ -269,7 +269,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	{
 		Cursor c = database.rawQuery("SELECT SUM(ects)\n" +
 				"FROM subject\n" +
-				"WHERE  grade > 0", null);
+				"WHERE  grade >= '5.6'", null);
 
 		c.moveToNext();
 
@@ -303,7 +303,7 @@ public class DatabaseReceiver extends SQLiteOpenHelper {
 	{
 		Cursor c = database.rawQuery("SELECT sum(ects)\n" +
 				"FROM subject\n" +
-				"WHERE grade < '5,5' AND grade > '0'", null);
+				"WHERE grade < '5,6' AND grade > '0'", null);
 
 		c.moveToNext();
 		int ects = c.getInt(0);

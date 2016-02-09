@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.Custom.ExpandableListAdapter;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.R;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.database.DatabaseReceiver;
 import com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.models.Subject;

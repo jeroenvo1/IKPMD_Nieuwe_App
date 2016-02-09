@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
         else {
             user_name.setText(prefs.getString("username"));
         }
-        
+
         checkBSA();
     }
 

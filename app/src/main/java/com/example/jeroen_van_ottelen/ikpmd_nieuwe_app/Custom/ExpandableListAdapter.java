@@ -1,4 +1,4 @@
-package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.activity;
+package com.example.jeroen_van_ottelen.ikpmd_nieuwe_app.Custom;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -105,14 +105,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
                 lblListHeader.setTypeface(null, Typeface.BOLD);
                 lblListHeader.setText(headerTitle);
             }
-            else if(_subjects.get(groupPosition).getGrade() >= 5.5 && _subjects.get(groupPosition).getGrade() < 7)
+            else if(_subjects.get(groupPosition).getGrade() >= 5.6 && _subjects.get(groupPosition).getGrade() < 7)
             {
                 convertView = infalInflater.inflate(R.layout.list_group_orange, null);
                 TextView lblListHeader = (TextView) convertView.findViewById(R.id.listHeaderOrange);
                 lblListHeader.setTypeface(null, Typeface.BOLD);
                 lblListHeader.setText(headerTitle);
             }
-            else if(_subjects.get(groupPosition).getGrade() >0 && _subjects.get(groupPosition).getGrade() < 5.5)
+            else if(_subjects.get(groupPosition).getGrade() >0 && _subjects.get(groupPosition).getGrade() <= 5.5)
             {
                 convertView = infalInflater.inflate(R.layout.list_group_red, null);
                 TextView lblListHeader = (TextView) convertView.findViewById(R.id.listHeaderRed);
