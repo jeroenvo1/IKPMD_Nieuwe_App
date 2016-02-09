@@ -90,6 +90,31 @@ public class MainActivity extends ActionBarActivity {
         else {
             user_name.setText(prefs.getString("username"));
         }
+        
+        checkBSA();
+    }
+
+    public void checkBSA()
+    {
+        if(db.bsaCheck()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("BSA drijgt");
+
+            // Input maken
+            TextView text1 = new TextView(this);
+            text1.setText("\nPas op, je hebt de kans op een BSA");
+
+            builder.setView(text1);
+
+            // Buttons en onClickListemer maken
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+
+            builder.show();
+        }
     }
 
     public void resumableData() {
